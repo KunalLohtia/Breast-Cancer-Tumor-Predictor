@@ -1,13 +1,112 @@
+# About this Project
+
+Breast cancer is a prevalent form of cancer that requires accurate classification for effective treatment planning. This project explores various machine learning algorithms to classify tumors as either malignant (cancerous) or benign (non-cancerous) using a comprehensive breast cancer dataset. The dataset comprises 569 instances with 32 attributes per instance, including features like radius, texture, perimeter, area, and various measures of smoothness, compactness, concavity, concave points, symmetry, and fractal dimension. The 'diagnosis' column indicates whether each tumor is benign (B) or malignant (M). Exploratory data analysis using pair plots and heat maps revealed the dataset's characteristics and guided the selection of appropriate modeling techniques. The algorithms under consideration include artificial neural networks (ANN) with ReLU and sigmoid activation functions, along with logistic regression.
+
+Hyperparameter tuning was performed to optimize model performance, including batch size, number of epochs, and learning rate. Data preprocessing involved normalization to ensure uniformity across attributes. The final models were then evaluated based on accuracy and classification reports.
+
+
+# Development
+
+### Data Preprocessing and Model Training
+
+#### Artificial Neural Network (ANN) with ReLU
+
+- Data Loading and Cleaning:
+  - Loads the breast cancer dataset from "breast-cancer.csv".
+  - Drops the id column and removes rows where 'concavity_mean' is zero.
+  - Splits data into features (X) and target (y).
+  - Uses MinMaxScaler to normalize the feature data (X).
+  - Converts the target variable (y) into categorical using one-hot encoding (pd.get_dummies).
+
+- Model Training (MLPClassifier):
+  - Configures an MLPClassifier with parameters for stochastic gradient descent (solver='sgd'), ReLU activation (activation='relu'), initial learning rate (learning_rate_init=0.2), batch size (batch_size=225), hidden layer sizes (hidden_layer_sizes=(30, 3)), and maximum iterations (max_iter=500).
+  - Performs 10-fold cross-validation (cross_validate) with accuracy and mean squared error metrics.
+
+- Model Evaluation:
+  - Splits data into training and test sets (train_test_split).
+  - Trains the MLPClassifier (mlp.fit).
+  - Makes predictions (mlp.predict) and evaluates accuracy (accuracy_score) and mean squared error (mean_squared_error).
+  - Prints confusion matrix (multilabel_confusion_matrix) and classification report (classification_report).
+
+- Serialization:
+  - Saves the trained model using pickle (pickle.dump(mlp, open("relu.pkl", "wb"))).
+
+#### Artificial Neural Network (ANN) with Sigmoid
+
+- Data Loading and Cleaning:
+  - Loads and cleans the breast cancer dataset similarly.
+
+- Model Training (MLPClassifier):
+  - Configures an MLPClassifier with parameters for stochastic gradient descent (solver='sgd'), logistic activation (activation='logistic'), initial learning rate (learning_rate_init=0.25), batch size (batch_size=150), hidden layer sizes (hidden_layer_sizes=(30, 10)), and maximum iterations (max_iter=500).
+  - Performs 10-fold cross-validation (cross_validate) with accuracy and mean squared error metrics.
+
+- Model Evaluation:
+  - Splits data into training and test sets (train_test_split).
+  - Trains the MLPClassifier (mlp.fit).
+  - Makes predictions (mlp.predict) and evaluates accuracy (accuracy_score) and mean squared error (mean_squared_error).
+  - Prints confusion matrix (multilabel_confusion_matrix) and classification report (classification_report).
+
+- Serialization:
+  - Saves the trained model using pickle (pickle.dump(mlp, open("annsig.pkl", "wb"))).
+
+#### Logistic Regression
+
+- Data Loading and Cleaning:
+  - Similar to relu.py, loads the breast cancer dataset and performs data cleaning.
+
+- Model Training (LogisticRegression):
+  - Uses MinMaxScaler to normalize features.
+  - Initializes a LogisticRegression model.
+  - Trains the model (model.fit), makes predictions (model.predict), and evaluates accuracy (accuracy_score).
+  - Prints classification report (classification_report).
+  - Serializes the trained model using pickle (pickle.dump(model, open("logistic.pkl", "wb"))).
+
+
+
+### Web Application Development
+
+- Flask Application:
+  - Creates a Flask web application (Flask(__name__)).
+  - Loads the serialized models (pickle.load(open(...)) for 'relu.pkl', 'annsig.pkl', 'logistic.pkl').
+  - Initializes MinMaxScaler for feature normalization.
+  - Routes:
+    - Home Page ("/"):
+      - Renders index.html as the home page.
+
+    - Prediction Page ("/predict"):
+      - Handles POST requests from a form in index.html.
+      - Receives input data from user form.
+      - Normalizes the input data using scaler.transform.
+      - Uses the loaded models (relu, sigmoid, logistic) to make predictions.
+      - Renders index.html with prediction results (prediction_text_relu, prediction_text_sigmoid, prediction_text_logistic).
+
+- Frontend (index.html):
+  - HTML Form:
+    - Provides an input form for users to enter tumor attributes (Attribute 1 to Attribute 30).
+    - Submits data to "/predict" route via POST method.
+
+  - CSS Styling:
+    - Uses CSS for styling elements such as text formatting, input boxes, buttons, and layout.
+   
+# Results
+
+The models achieved highly accurate classifications for breast cancer tumors using advanced machine learning techniques and rigorous model evaluation methods. Key highlights include:
+
+- Accuracy Metrics: Across all models (Artificial Neural Networks with ReLU and Sigmoid activations, and Logistic Regression), they consistently achieved over 98% accuracy in classifying tumors as malignant or benign.
+
+- Precision, Recall, and F1-score: For both malignant and benign tumor classifications, all three models demonstrated exceptional precision, recall, and F1-score metrics that consistently exceeded 95%. 
+
+
 # How to Run the Program
 
-First make sure the following pkl files have been generated by running the relu.py, annsig.py, and logistic_regression.py :
+First make sure the following pkl files have been generated by running the relu.py, annsig.py, and logistic_regression.py files:
 ```
 1. relu.pkl
 2. annsig.pkl
 3. logistic.pkl
 ```
 
-From there, you can then run app.py to run the website
+From there, run app.py to run the flask web application and to deploy the models
 
 # Test Cases
 
