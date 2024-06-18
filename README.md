@@ -2,7 +2,7 @@
 
 Breast cancer is a prevalent form of cancer that requires accurate classification for effective treatment planning. This project explores various machine learning algorithms to classify tumors as either malignant (cancerous) or benign (non-cancerous) using a comprehensive breast cancer dataset. The dataset comprises 569 instances with 32 attributes per instance, including features like radius, texture, perimeter, area, and various measures of smoothness, compactness, concavity, concave points, symmetry, and fractal dimension. The 'diagnosis' column indicates whether each tumor is benign (B) or malignant (M). Exploratory data analysis using pair plots and heat maps revealed the dataset's characteristics and guided the selection of appropriate modeling techniques. The algorithms under consideration include artificial neural networks (ANN) with ReLU and sigmoid activation functions, along with logistic regression.
 
-Hyperparameter tuning was performed to optimize model performance, including batch size, number of epochs, and learning rate. Data preprocessing involved normalization to ensure uniformity across attributes. The final models were then evaluated based on accuracy and classification reports.
+Hyperparameter tuning and grid search with stochastic descent were performed to optimize model performance, including batch size, number of epochs, and learning rate. Data preprocessing involved normalization to ensure uniformity across attributes. The final models were then evaluated based on accuracy and classification reports.
 
 
 # Development
